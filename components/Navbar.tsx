@@ -1,3 +1,4 @@
+import { Moon, Sun } from "lucide-react"
 import Link from "next/link";
 import {
   NavigationMenu,
@@ -5,6 +6,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "./ui/navigation-menu";
+import { ThemeModeButton } from "./ThemeModeButton";
 
 function Navbar() {
   return (
@@ -12,7 +14,7 @@ function Navbar() {
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink>
-            <Link href="/">Home</Link>
+            <Link href="/Home">Home</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
@@ -34,6 +36,9 @@ function Navbar() {
           <NavigationMenuLink>
             <Link href="/profile">Profile</Link>
           </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+                    <ThemeModeButton />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
