@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { db } from "./db";
 import { haveIBeenPwned, username } from "better-auth/plugins";
 import { Roles } from "@/generated/prisma/browser";
+import { hashPassword, verifyPassword } from "./password";
 
 export const auth = betterAuth({
     database: prismaAdapter(db, {
@@ -10,6 +11,8 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
+        hash: hashPassword,
+        verify: verifyPassword,
     },
     user: {
         additionalFields: {
@@ -23,6 +26,9 @@ export const auth = betterAuth({
                 unique: true,
             }
         }
+    },
+    advanced: {
+        useSecureCookies: process.env.NODE_ENV ==="production"
     },
     plugins: [
         username(), 

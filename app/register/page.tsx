@@ -16,6 +16,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { signUp } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
+
 
 
 function RegisterPage() {
@@ -31,7 +35,23 @@ function RegisterPage() {
   });
 
   async function onSubmit(data: z.infer<typeof registerSchema>) {
-    console.log(JSON.stringify(data));
+    const result = await signUp.email({
+      email: data.email,
+      username: data.username,
+      name: data.name,
+      password: data.password,
+      role: data.admin ? "ADMIN" : "USER"
+    })
+
+    if (result.error){
+      toast.error ("Registration failed", {
+        description: result.error.message || "Unable to register",
+      });
+      return;
+    }
+      toast.success("Registration successful!");
+      form.reset() ;
+      redirect("/dashboard");
     }
 
   return (

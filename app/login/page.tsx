@@ -20,6 +20,9 @@ import z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { signIn } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 function LoginPage() {
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -31,8 +34,22 @@ function LoginPage() {
   });
 
   async function onSubmit(data: z.infer<typeof loginSchema>) {
-    console.log(JSON.stringify(data));
-  }
+   const result = await signIn.username({
+      username: data.username,
+      password: data.password,
+   });
+       
+   
+       if (result.error){
+         toast.error ("Login failed", {
+           description: result.error.message || "Unable to Login",
+         });
+         return;
+       }
+         toast.success("Login successful!");
+         redirect("/dashboard");
+       }
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center">
